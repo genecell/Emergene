@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.sparse import csr_matrix, issparse
 import scanpy as sc
-
+### Build the adjacent matrix
 def buildADJ(adata,
             use_rep:str='X_pca',
              n_nearest_neighbors:int=10,
