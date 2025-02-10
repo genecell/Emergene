@@ -3,6 +3,8 @@ from scipy.sparse import csr_matrix, issparse
 import scanpy as sc
 from anndata import AnnData
 
+
+
 from sklearn.neighbors import kneighbors_graph
 ### Compute adjacency martix given the low-dimensional representations
 def _build_adjacency_matrix(
@@ -767,7 +769,7 @@ def runMarkG(adata,
 
     
 
-### Refer to scDRS
+### Refer to scDRS for _get_p_from_empi_null function
 def _get_p_from_empi_null(v_t, v_t_null):
     """Compute p-value from empirical null
     For score T and a set of null score T_1,...T_N, the p-value is
@@ -811,13 +813,13 @@ def score(
     adata,
     gene_list,
     gene_weights=None,
-    n_nearest_neighbors:int=30,
-    leaf_size:int=40,
-    layer:str='infog',
-    randome_seed:int=1927,
+    n_nearest_neighbors: int=30,
+    leaf_size: int=40,
+    layer: str='infog',
+    randome_seed: int=1927,
     n_ctrl_set:int=100,
     key_added:str=None,
-        
+    verbosity: int=0
 ):
     """
     For a given gene set, compute gene expression enrichment scores and P values for all the cells.
@@ -854,7 +856,9 @@ def score(
     key_added : str, optional
         If provided, the computed scores will be stored in `adata.obs[key_added]`. The scores and P values will be stored in `adata.uns[key_added]` as well.
         Default is None, and the `INFOG_score` will be used as the key.
-
+    verbosity : int, optional (default: 0)
+        Level of verbosity for logging information.
+        
     Returns
     -------
     None
@@ -871,14 +875,19 @@ def score(
     ### Calculate the mean and variance
 
     ### Calculate the variance
-    c = adata.layers[layer].copy()
+    # Determine the input matrix
+    if layer is not None:
+        c = adata.layers[layer].copy()
+    else:
+        c = adata.X.copy()
+    
     mean=np.array(c.mean(axis=0))
-    roen_mean=mean.copy()[0]
+    infog_mean=mean.copy()[0]
     mean **=2
     c.data **= 2
     residual_var_orig_b=np.squeeze(np.array(c.mean(axis=0))-mean) 
     
-    mean_var=np.array([roen_mean, residual_var_orig_b]).T
+    mean_var=np.array([infog_mean, residual_var_orig_b]).T
     ### Construct a kNN graph for the genes based on gene means and gene variances 
     kdt = KDTree(mean_var, leaf_size=leaf_size, metric='euclidean')
     mean_var_knn_idx=kdt.query(mean_var, k=n_nearest_neighbors+1, return_distance=False)
@@ -979,19 +988,18 @@ def score(
     if key_added is None:
         adata.obs['INFOG_score']=score
         adata.uns['INFOG_score']=df_score_pval_res
+        if verbosity>0:
+            print(f"Finished. The scores are saved in adata.obs['INFOG_score'] and the scores, P values are saved in adata.uns['INFOG_score'].")
+        
     else:
         adata.obs[key_added]=score
         adata.uns[key_added]=df_score_pval_res
+        if verbosity>0:
+            print(f"Finished. The scores are saved in adata.obs['{key_added}'] and the scores, P values are saved in adata.uns['{key_added}'].")
+        
+        
+    
 
-    
-    
-### Refer to Scanpy
-def _select_top_n(scores, n_top):
-    reference_indices = np.arange(scores.shape[0], dtype=int)
-    partition = np.argpartition(scores, -n_top)[-n_top:]
-    partial_indices = np.argsort(scores[partition])[::-1]
-    global_indices = reference_indices[partition][partial_indices]
-    return global_indices
 
 ### Identify gene module
 def identifyGeneModule(
@@ -1037,6 +1045,14 @@ def identifyGeneModule(
     
     return (adata_gene.obs)
 
+### Refer to Scanpy for _select_top_n function
+def _select_top_n(scores, n_top):
+    reference_indices = np.arange(scores.shape[0], dtype=int)
+    partition = np.argpartition(scores, -n_top)[-n_top:]
+    partial_indices = np.argsort(scores[partition])[::-1]
+    global_indices = reference_indices[partition][partial_indices]
+    return global_indices
+
 ### Normalization based on information
 def infog(
     adata,
@@ -1081,12 +1097,6 @@ def infog(
 #     del c
     adata.var[key_added+'_var']=residual_var_orig_b
     
-    def _select_top_n(scores, n_top):
-        reference_indices = np.arange(scores.shape[0], dtype=int)
-        partition = np.argpartition(scores, -n_top)[-n_top:]
-        partial_indices = np.argsort(scores[partition])[::-1]
-        global_indices = reference_indices[partition][partial_indices]
-        return global_indices
     
     ### Feature selection    
     pos_gene=_select_top_n(adata.var[key_added+'_var'],n_top_genes)
