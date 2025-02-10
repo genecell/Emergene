@@ -6,7 +6,7 @@ If your scRNA-seq data have two conditions, e.g., disease and control, and you'd
 We are now preparing detailed tutorials and lauching a website for Emergene. Stay tuned, my friend. Thank you for your interest in our tool!
 
 ### Citation
-If Emergene is useful for your research, please consider citing Wu et al., Pyramidal neurons proportionately alter the identity and survival of specific cortical interneuron subtypes, bioRxiv (2024).
+If Emergene is useful for your research,  please consider citing [Wu et al., Pyramidal neurons proportionately alter the identity and survival of specific cortical interneuron subtypes, bioRxiv (2024)](https://www.biorxiv.org/content/10.1101/2024.07.20.604399v1). 
 
 ### Contact
 Min Dai
