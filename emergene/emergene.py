@@ -865,9 +865,7 @@ def score(
         Modifies the `adata` object in-place, see `key_added`.
     """
     
-    ### Set the random seed
-    # Set the random seed for reproducibility
-    np.random.seed(randome_seed)  
+    
     
     if gene_weights is None:
         gene_weights=np.repeat(1.0, len(gene_list))
@@ -877,15 +875,24 @@ def score(
     ### Calculate the variance
     # Determine the input matrix
     if layer is not None:
-        c = adata.layers[layer].copy()
+        cellxgene = adata.layers[layer] ### I think .copy() is not needed here
+        ### For the query gene set
+        cellxgene_subset=adata[:, gene_list].layers[layer]
     else:
-        c = adata.X.copy()
+        cellxgene = adata.X
+        ### For the query gene set
+        cellxgene_subset= adata[:, gene_list].X
     
-    mean=np.array(c.mean(axis=0))
+    
+    ### Calculate the mean and variance
+    # c=cellxgene.copy()
+    mean=np.array(cellxgene.mean(axis=0))
     infog_mean=mean.copy()[0]
     mean **=2
-    c.data **= 2
-    residual_var_orig_b=np.squeeze(np.array(c.mean(axis=0))-mean) 
+    ### Instead of c.data **= 2, I used cellxgene.multiply(cellxgene), which is the same result
+    # c.data **= 2
+    # residual_var_orig_b=np.squeeze(np.array(c.mean(axis=0))-mean) 
+    residual_var_orig_b = np.squeeze(np.array(cellxgene.multiply(cellxgene).mean(axis=0)) - mean)
     
     mean_var=np.array([infog_mean, residual_var_orig_b]).T
     ### Construct a kNN graph for the genes based on gene means and gene variances 
@@ -909,7 +916,10 @@ def score(
     n_genes=gene_list_knn_idx.shape[0]
     # Initialize an array to hold the sampled values
     n_ctrl_set_idx = np.empty((n_ctrl_set, n_genes), dtype=gene_list_knn_idx.dtype)
-    # Sample T values from each row's values at once
+    ### Sampling genes with similar mean and variance
+    ### Set the random seed
+    # Set the random seed for reproducibility
+    np.random.seed(randome_seed)  
     for n in range(n_genes):
         n_ctrl_set_idx[:,n] = np.random.choice(gene_list_knn_idx[n], size=n_ctrl_set, replace=True)
 
@@ -929,7 +939,7 @@ def score(
     #### But it's not equal to L1-normalization, because the weight has it's own scale
     # ctrl_gene_weight=normalize(ctrl_gene_weight,norm='l1', axis=0)
 
-    cellxgene_ctrl=adata.layers[layer] @ ctrl_gene_weight
+    cellxgene_ctrl=cellxgene @ ctrl_gene_weight
     
     
     ### Need to do element-wise multiplication to add the gene weights:
@@ -937,7 +947,8 @@ def score(
     ### cellxgene_query=np.ravel(cellxgene[:,np.isin(adata.var_names,gene_list)].multiply(gene_weights).mean(axis=1))
     # cellxgene_query=np.ravel(adata[:, gene_list].layers[layer].multiply(gene_weights).mean(axis=1))
     ## Use sum here, because the ctrl multiplication equals to sum
-    cellxgene_query=np.ravel(adata[:, gene_list].layers[layer].multiply(np.array(gene_weights)).sum(axis=1))
+    ### cellxgene_subset is the cellxgene matrice with the input gene kept
+    cellxgene_query=np.ravel(cellxgene_subset.multiply(np.array(gene_weights)).sum(axis=1))
     
     # Get p-values
     from statsmodels.stats.multitest import multipletests
@@ -997,6 +1008,7 @@ def score(
         if verbosity>0:
             print(f"Finished. The scores are saved in adata.obs['{key_added}'] and the scores, P values are saved in adata.uns['{key_added}'].")
         
+            
         
     
 
