@@ -816,7 +816,7 @@ def score(
     n_nearest_neighbors: int=30,
     leaf_size: int=40,
     layer: str='infog',
-    randome_seed: int=1927,
+    random_seed: int=1927,
     n_ctrl_set:int=100,
     key_added:str=None,
     verbosity: int=0
@@ -864,7 +864,9 @@ def score(
     None
         Modifies the `adata` object in-place, see `key_added`.
     """
-    
+    ### Set the random seed
+    # Set the random seed for reproducibility
+    np.random.seed(random_seed) 
     
     
     if gene_weights is None:
@@ -916,10 +918,7 @@ def score(
     n_genes=gene_list_knn_idx.shape[0]
     # Initialize an array to hold the sampled values
     n_ctrl_set_idx = np.empty((n_ctrl_set, n_genes), dtype=gene_list_knn_idx.dtype)
-    ### Sampling genes with similar mean and variance
-    ### Set the random seed
-    # Set the random seed for reproducibility
-    np.random.seed(randome_seed)  
+    ### Sampling genes with similar mean and variance 
     for n in range(n_genes):
         n_ctrl_set_idx[:,n] = np.random.choice(gene_list_knn_idx[n], size=n_ctrl_set, replace=True)
 
@@ -1008,6 +1007,7 @@ def score(
         if verbosity>0:
             print(f"Finished. The scores are saved in adata.obs['{key_added}'] and the scores, P values are saved in adata.uns['{key_added}'].")
         
+          
             
         
     
