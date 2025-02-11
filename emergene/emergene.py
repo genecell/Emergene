@@ -974,9 +974,10 @@ def score(
     scaling_factor=np.median(gene_weights)*len(gene_list)
     cellxgene_query=cellxgene_query/scaling_factor
     BG=BG/scaling_factor
+    
+    score= cellxgene_query - BG
     ### Use division
-    # score= cellxgene_query - BG
-    score= cellxgene_query/(BG + 1e-10) ## adding epsilon to avoid division by zero
+    # score= cellxgene_query/(BG + 1e-10) ## adding epsilon to avoid division by zero
     
     score_pval_res = {
                 "score": score,
@@ -1006,7 +1007,6 @@ def score(
         adata.uns[key_added]=df_score_pval_res
         if verbosity>0:
             print(f"Finished. The scores are saved in adata.obs['{key_added}'] and the scores, P values are saved in adata.uns['{key_added}'].")
-        
           
             
         
