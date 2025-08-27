@@ -1,0 +1,28 @@
+.. Emergene documentation master file, created by
+   sphinx-quickstart on Fri Aug 22 15:09:32 2025.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Emergene's documentation!
+====================================
+
+Individual cell-based differential transcriptomic analysis across conditions
+If your scRNA-seq data have two conditions, e.g., disease and control, and you'd like to know which cells changed the most in the disease condition, then Emergene is the tool for you. Similarly, if you are studying development, and want to understand the emergence of cell type diversity, Emergene can help you with that. Not only scRNA-seq data, but also the spatial transcriptomics data could be used as the input for Emergene.
+
+If Emergene is useful for your research, please consider citing  `Wu et al., (2024) <./references.html>`_.
+
+
+.. toctree::
+   :maxdepth: 1
+
+   installation
+   tutorials
+   modules
+   references
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

@@ -1,0 +1,1340 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Individual cell-based differential transcriptomic analysis across conditions &#8212; Emergene 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=0330b353" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring';</script>
+    <script src="../_static/sidebar_toggle.js?v=3b053ec6"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API" href="../modules.html" />
+    <link rel="prev" title="Tutorials" href="../tutorials.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Emergene 1.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../tutorials.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../modules.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/genecell/Emergene" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../tutorials.html">
+    Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../modules.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/genecell/Emergene" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+</div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../tutorials.html" class="nav-link">Tutorials</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Individual cell-based differential transcriptomic analysis across conditions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="Individual-cell-based-differential-transcriptomic-analysis-across-conditions">
+<h1>Individual cell-based differential transcriptomic analysis across conditions<a class="headerlink" href="#Individual-cell-based-differential-transcriptomic-analysis-across-conditions" title="Link to this heading">#</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>path = &#39;/home/mid166/Analysis/Jupyter/Python/Package/PIASO_github&#39;
+import sys
+sys.path.append(path)
+import piaso ## Available in https://github.com/genecell/PIASO
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import scanpy as sc
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import pandas as pd
+import numpy as np
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.set_figure_params(dpi=80,dpi_save=300, color_map=&#39;viridis&#39;,facecolor=&#39;white&#39;)
+from matplotlib import rcParams
+rcParams[&#39;figure.figsize&#39;] = 4, 4
+save_dir=&#39;/n/data1/hms/neurobio/fishell/mindai/Result/single-cell/Methods/Emergene&#39;
+sc.settings.figdir = save_dir
+prefix=&#39;Emergene_Tutorial&#39;
+</pre></div>
+</div>
+</div>
+<section id="Load-the-data">
+<h2>Load the data<a class="headerlink" href="#Load-the-data" title="Link to this heading">#</a></h2>
+<p>The 25k subsampled snRNA-seq data <code class="docutils literal notranslate"><span class="pre">SEA-AD_CaseControl_subset_log1p_25k.h5ad</span></code> from Allen SEA-AD project is available in google drive: <a class="reference external" href="https://drive.google.com/file/d/1YLdzJPFuKFrSYTc82bLMKmFGSZwsTAck">https://drive.google.com/file/d/1YLdzJPFuKFrSYTc82bLMKmFGSZwsTAck</a>.</p>
+<p>The original data is available in <a class="reference external" href="https://portal.brain-map.org/explore/seattle-alzheimers-disease">https://portal.brain-map.org/explore/seattle-alzheimers-disease</a>.</p>
+<p>You can use gdrive to download the above dataset to your space:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mkdir -p /n/data1/hms/neurobio/fishell/mindai/Result/single-cell/Methods/Emergene/
+cd /n/data1/hms/neurobio/fishell/mindai/Result/single-cell/Methods/Emergene/
+gdrive files download 1YLdzJPFuKFrSYTc82bLMKmFGSZwsTAck
+</pre></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>adata=sc.read(&#39;/n/data1/hms/neurobio/fishell/mindai/Result/single-cell/Methods/Emergene/SEA-AD_CaseControl_subset_log1p_25k.h5ad&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>adata
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+AnnData object with n_obs × n_vars = 25600 × 36601
+    obs: &#39;sample_id&#39;, &#39;Neurotypical reference&#39;, &#39;Donor ID&#39;, &#39;Organism&#39;, &#39;Brain Region&#39;, &#39;Sex&#39;, &#39;Gender&#39;, &#39;Age at Death&#39;, &#39;Race (choice=White)&#39;, &#39;Race (choice=Black/ African American)&#39;, &#39;Race (choice=Asian)&#39;, &#39;Race (choice=American Indian/ Alaska Native)&#39;, &#39;Race (choice=Native Hawaiian or Pacific Islander)&#39;, &#39;Race (choice=Unknown or unreported)&#39;, &#39;Race (choice=Other)&#39;, &#39;specify other race&#39;, &#39;Hispanic/Latino&#39;, &#39;Highest level of education&#39;, &#39;Years of education&#39;, &#39;PMI&#39;, &#39;Fresh Brain Weight&#39;, &#39;Brain pH&#39;, &#39;Overall AD neuropathological Change&#39;, &#39;Thal&#39;, &#39;Braak&#39;, &#39;CERAD score&#39;, &#39;Overall CAA Score&#39;, &#39;Highest Lewy Body Disease&#39;, &#39;Total Microinfarcts (not observed grossly)&#39;, &#39;Total microinfarcts in screening sections&#39;, &#39;Atherosclerosis&#39;, &#39;Arteriolosclerosis&#39;, &#39;LATE&#39;, &#39;Cognitive Status&#39;, &#39;Last CASI Score&#39;, &#39;Interval from last CASI in months&#39;, &#39;Last MMSE Score&#39;, &#39;Interval from last MMSE in months&#39;, &#39;Last MOCA Score&#39;, &#39;Interval from last MOCA in months&#39;, &#39;APOE Genotype&#39;, &#39;Primary Study Name&#39;, &#39;Secondary Study Name&#39;, &#39;NeuN positive fraction on FANS&#39;, &#39;RIN&#39;, &#39;cell_prep_type&#39;, &#39;facs_population_plan&#39;, &#39;rna_amplification&#39;, &#39;sample_name&#39;, &#39;sample_quantity_count&#39;, &#39;expc_cell_capture&#39;, &#39;method&#39;, &#39;pcr_cycles&#39;, &#39;percent_cdna_longer_than_400bp&#39;, &#39;rna_amplification_pass_fail&#39;, &#39;amplified_quantity_ng&#39;, &#39;load_name&#39;, &#39;library_prep&#39;, &#39;library_input_ng&#39;, &#39;r1_index&#39;, &#39;avg_size_bp&#39;, &#39;quantification_fmol&#39;, &#39;library_prep_pass_fail&#39;, &#39;exp_component_vendor_name&#39;, &#39;batch_vendor_name&#39;, &#39;experiment_component_failed&#39;, &#39;alignment&#39;, &#39;Genome&#39;, &#39;ar_id&#39;, &#39;bc&#39;, &#39;GEX_Estimated_number_of_cells&#39;, &#39;GEX_number_of_reads&#39;, &#39;GEX_sequencing_saturation&#39;, &#39;GEX_Mean_raw_reads_per_cell&#39;, &#39;GEX_Q30_bases_in_barcode&#39;, &#39;GEX_Q30_bases_in_read_2&#39;, &#39;GEX_Q30_bases_in_UMI&#39;, &#39;GEX_Percent_duplicates&#39;, &#39;GEX_Q30_bases_in_sample_index_i1&#39;, &#39;GEX_Q30_bases_in_sample_index_i2&#39;, &#39;GEX_Reads_with_TSO&#39;, &#39;GEX_Sequenced_read_pairs&#39;, &#39;GEX_Valid_UMIs&#39;, &#39;GEX_Valid_barcodes&#39;, &#39;GEX_Reads_mapped_to_genome&#39;, &#39;GEX_Reads_mapped_confidently_to_genome&#39;, &#39;GEX_Reads_mapped_confidently_to_intergenic_regions&#39;, &#39;GEX_Reads_mapped_confidently_to_intronic_regions&#39;, &#39;GEX_Reads_mapped_confidently_to_exonic_regions&#39;, &#39;GEX_Reads_mapped_confidently_to_transcriptome&#39;, &#39;GEX_Reads_mapped_antisense_to_gene&#39;, &#39;GEX_Fraction_of_transcriptomic_reads_in_cells&#39;, &#39;GEX_Total_genes_detected&#39;, &#39;GEX_Median_UMI_counts_per_cell&#39;, &#39;GEX_Median_genes_per_cell&#39;, &#39;Multiome_Feature_linkages_detected&#39;, &#39;Multiome_Linked_genes&#39;, &#39;Multiome_Linked_peaks&#39;, &#39;ATAC_Confidently_mapped_read_pairs&#39;, &#39;ATAC_Fraction_of_genome_in_peaks&#39;, &#39;ATAC_Fraction_of_high_quality_fragments_in_cells&#39;, &#39;ATAC_Fraction_of_high_quality_fragments_overlapping_TSS&#39;, &#39;ATAC_Fraction_of_high_quality_fragments_overlapping_peaks&#39;, &#39;ATAC_Fraction_of_transposition_events_in_peaks_in_cells&#39;, &#39;ATAC_Mean_raw_read_pairs_per_cell&#39;, &#39;ATAC_Median_high_quality_fragments_per_cell&#39;, &#39;ATAC_Non-nuclear_read_pairs&#39;, &#39;ATAC_Number_of_peaks&#39;, &#39;ATAC_Percent_duplicates&#39;, &#39;ATAC_Q30_bases_in_barcode&#39;, &#39;ATAC_Q30_bases_in_read_1&#39;, &#39;ATAC_Q30_bases_in_read_2&#39;, &#39;ATAC_Q30_bases_in_sample_index_i1&#39;, &#39;ATAC_Sequenced_read_pairs&#39;, &#39;ATAC_TSS_enrichment_score&#39;, &#39;ATAC_Unmapped_read_pairs&#39;, &#39;ATAC_Valid_barcodes&#39;, &#39;Number of mapped reads&#39;, &#39;Number of unmapped reads&#39;, &#39;Number of multimapped reads&#39;, &#39;Number of reads&#39;, &#39;Number of UMIs&#39;, &#39;Genes detected&#39;, &#39;Doublet score&#39;, &#39;Fraction mitochondrial UMIs&#39;, &#39;Used in analysis&#39;, &#39;Class confidence&#39;, &#39;Class&#39;, &#39;Subclass confidence&#39;, &#39;Subclass&#39;, &#39;Supertype confidence&#39;, &#39;Supertype (non-expanded)&#39;, &#39;Supertype&#39;, &#39;Continuous Pseudo-progression Score&#39;, &#39;Severely Affected Donor&#39;, &#39;Condition&#39;
+    var: &#39;gene_ids&#39;
+    uns: &#39;APOE4 Status_colors&#39;, &#39;Braak_colors&#39;, &#39;CERAD score_colors&#39;, &#39;Cognitive Status_colors&#39;, &#39;Condition_colors&#39;, &#39;Great Apes Metadata&#39;, &#39;Highest Lewy Body Disease_colors&#39;, &#39;LATE_colors&#39;, &#39;Overall AD neuropathological Change_colors&#39;, &#39;Sex_colors&#39;, &#39;Subclass_colors&#39;, &#39;Supertype_colors&#39;, &#39;Thal_colors&#39;, &#39;UW Clinical Metadata&#39;, &#39;X_normalization&#39;, &#39;batch_condition&#39;, &#39;default_embedding&#39;, &#39;neighbors&#39;, &#39;title&#39;, &#39;umap&#39;
+    obsm: &#39;X_scVI&#39;, &#39;X_umap&#39;
+    layers: &#39;UMIs&#39;, &#39;log1p&#39;
+    obsp: &#39;connectivities&#39;, &#39;distances&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pd.crosstab(adata.obs[&#39;Neurotypical reference&#39;], adata.obs[&#39;CERAD score&#39;])
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>CERAD score</th>
+      <th>Absent</th>
+      <th>Frequent</th>
+    </tr>
+    <tr>
+      <th>Neurotypical reference</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>False</th>
+      <td>10264</td>
+      <td>15336</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Check-the-cell-type-composition">
+<h2>Check the cell type composition<a class="headerlink" href="#Check-the-cell-type-composition" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.embedding(adata,
+            basis=&#39;X_umap&#39;,
+           color=[&#39;Subclass&#39;],
+           palette=piaso.pl.color.d_color3,
+           legend_fontoutline=2,
+           legend_fontweight=5,
+           cmap=&#39;Spectral_r&#39;,
+           ncols=3,
+           size=10,
+           frameon=False)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_12_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_12_0.png" style="width: 521px; height: 278px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.embedding(adata,
+    basis=&#39;X_umap&#39;,
+    color=[&#39;Subclass&#39;],
+    palette=piaso.pl.color.d_color3,
+    legend_fontoutline=2,
+    legend_fontsize=7,
+    legend_fontweight=5,
+    legend_loc=&#39;on data&#39;,
+    cmap=&#39;Spectral_r&#39;,
+    ncols=3,
+    size=10,
+    frameon=False)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_13_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_13_0.png" style="width: 265px; height: 277px;" />
+</div>
+</div>
+</section>
+<section id="Run-Emergene">
+<h2>Run Emergene<a class="headerlink" href="#Run-Emergene" title="Link to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[75]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>path = &#39;/home/mid166/Analysis/Jupyter/Python/Package/Emergene_github/emergene&#39;
+import sys
+sys.path.append(path)
+import emergene ## Available in https://github.com/genecell/Emergene
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import importlib
+importlib.reload(emergene)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[76]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;module &#39;emergene&#39; from &#39;/home/mid166/Analysis/Jupyter/Python/Package/Emergene_github/emergene/emergene.py&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[91]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%time
+emergene.infog(adata, layer=&#39;UMIs&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/mid166/Analysis/Jupyter/Python/Package/Emergene_github/emergene/emergene.py:1024: RuntimeWarning: divide by zero encountered in true_divide
+  info_factor=sparse.diags(counts_sum/cell_depth.ravel()) @ counts @ sparse.diags(1/gene_depth.ravel())
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The normalized data is saved as `infog` in `adata.layers`.
+The highly variable genes are saved as `highly_variable_infog` in `adata.obs`.
+Finished INFOG normalization.
+CPU times: user 10.9 s, sys: 10.8 s, total: 21.6 s
+Wall time: 21.6 s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[92]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%time
+EG_top_geneset_dict, EG_score_all=emergene.EmerGene(
+    adata,
+    layer=&#39;infog&#39;,
+    use_rep=&#39;X_scVI&#39;,
+    use_rep_acrossDataset=&#39;X_scVI&#39;,
+    condition_key=&#39;Condition&#39;,
+    n_nearest_neighbors=10,
+    n_repeats=5,
+    mu=0.1,
+    beta=1,
+    random_seed=27,
+    n_cells_expressed_threshold = 50, ### Change the number of cells threshold
+    n_top_EG_genes = 500, ### Change the number of top gene with highest Emergene scores
+    inplace=False,
+    gene_list_as_string=True,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Processing condition:  Control
+The EmerGene scores for all genes in condition Control are saved in the dataframe column &#39;EmerGene_Control&#39;.
+Processing condition:  Disease
+The EmerGene scores for all genes in condition Disease are saved in the dataframe column &#39;EmerGene_Disease&#39;.
+The local foldchange information for each individual cells is saved as `localFC` in adata.layers.
+Finished running the EmerGene.
+CPU times: user 4min 23s, sys: 2min 12s, total: 6min 35s
+Wall time: 5min 51s
+</pre></div></div>
+</div>
+</section>
+<section id="Calculate-enrichment-score-and-p-values-for-each-individual-cell">
+<h2>Calculate enrichment score and p-values for each individual cell<a class="headerlink" href="#Calculate-enrichment-score-and-p-values-for-each-individual-cell" title="Link to this heading">#</a></h2>
+<p>Use 1000 permutations:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>EG_top_geneset_dict.keys()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[93]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+dict_keys([&#39;EG_Control&#39;, &#39;EG_Disease&#39;])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[94]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%time
+valid_genes = set(adata.var_names)
+for group, gene_and_weight in EG_top_geneset_dict.items():
+    # Parse and filter the dictionary in one step, only keep the genes in adata.var_names
+    gene_dict = {k: float(v) for k, v in (item.split(&quot;:&quot;) for item in gene_and_weight.split(&quot;,&quot;)) if k in valid_genes}
+    gene_list=list(gene_dict.keys())
+    gene_weight=list(gene_dict.values())
+    print(f&#39;Processing {group}&#39;)
+
+
+    emergene.score(
+        adata,
+        gene_list=gene_list,
+        gene_weights=gene_weight,
+        layer=&#39;localFC&#39;,
+        # gene_weights=np.repeat(1.0, len(gene_list)),
+        n_nearest_neighbors=30,
+        randome_seed=27,
+        n_ctrl_set=1000,
+        key_added=f&#39;INFOG_{group}&#39;,
+    )
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Processing EG_Control
+Processing EG_Disease
+CPU times: user 54.3 s, sys: 40.2 s, total: 1min 34s
+Wall time: 1min 34s
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for key in EG_top_geneset_dict.keys():
+    print(key)
+    adata.obs[f&#39;{key}_score&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;score&#39;]
+    adata.obs[f&#39;{key}_nlog10_pval&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;nlog10_pval&#39;]
+    adata.obs[f&#39;{key}_nlog10_FDR&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;nlog10_pval_FDR&#39;]
+    adata.obs[f&#39;{key}_pval&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;pval&#39;]
+    adata.obs[f&#39;{key}_FDR&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;pval_FDR&#39;]
+    adata.obs[f&#39;{key}_pval_mc&#39;]=adata.uns[f&#39;INFOG_{group}&#39;][&#39;pval_mc&#39;]
+    adata.obs[f&#39;{key}_nlog10_pval_mc&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;nlog10_pval_mc&#39;]
+    adata.obs[f&#39;{key}_nlog10_mc_FDR&#39;]=adata.uns[f&#39;INFOG_{key}&#39;][&#39;nlog10_pval_mc_FDR&#39;]
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+EG_Control
+EG_Disease
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[96]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>adata.obs[&#39;SubclassXCondition&#39;] = piaso.pp.getCrossCategories(adata.obs, &#39;Subclass&#39;, &#39;Condition&#39;, )
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[97]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.umap(
+    adata,
+    color=[key+&#39;_score&#39; for key in EG_top_geneset_dict.keys()],
+    color_map=&quot;RdBu_r&quot;,
+    # color_map=piaso.pl.color.c_color4,
+    # vmin=-5,
+    # vmax=5,
+    s=20,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_25_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_25_0.png" style="width: 677px; height: 303px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[98]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.umap(
+    adata,
+    color=[key+&#39;_nlog10_pval&#39; for key in EG_top_geneset_dict.keys()],
+    color_map=&quot;RdBu_r&quot;,
+    # color_map=piaso.pl.color.c_color4,
+    vcenter=-np.log10(0.05),
+    # vmin=-5,
+    # vmax=5,
+    s=20,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_26_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_26_0.png" style="width: 655px; height: 303px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[99]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.umap(
+    adata,
+    color=[key+&#39;_nlog10_pval_mc&#39; for key in EG_top_geneset_dict.keys()],
+    color_map=&quot;RdBu_r&quot;,
+    vcenter=-np.log10(0.05),
+    s=20,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_27_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_27_0.png" style="width: 668px; height: 303px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[106]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.umap(
+    adata,
+    color=[key+&#39;_nlog10_mc_FDR&#39; for key in EG_top_geneset_dict.keys()],
+    color_map=&quot;RdBu_r&quot;,
+    vcenter=-np.log10(0.05),
+    s=20,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_28_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_28_0.png" style="width: 677px; height: 303px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[107]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.umap(
+    adata,
+    color=[key+&#39;_nlog10_FDR&#39; for key in EG_top_geneset_dict.keys()],
+    # color_map=&quot;RdBu_r&quot;,
+    color_map=piaso.pl.color.c_color4,
+    vcenter=-np.log10(0.05),
+    # vmin=-5,
+    # vmax=5,
+    s=20,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_29_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_29_0.png" style="width: 668px; height: 303px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[108]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>piaso.pl.plot_features_violin(adata,
+    feature_list=[key+&#39;_nlog10_FDR&#39; for key in EG_top_geneset_dict.keys()],
+    width_single=20,
+    height_single=3,
+    groupby=&#39;SubclassXCondition&#39;,
+    show_grid=False
+                             )
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_30_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_30_0.png" style="width: 1312px; height: 591px;" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for key in EG_top_geneset_dict.keys():
+    tmp=adata.obs[key+&#39;_nlog10_pval_mc&#39;].copy()
+    tmp[tmp&lt;= (-np.log10(0.05))]=0
+    adata.obs[key+&#39;_nlog10_mc_trim&#39;]=tmp
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[110]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.dotplot(
+    adata,
+    var_names=[key+&#39;_nlog10_mc_trim&#39; for key in EG_top_geneset_dict.keys()],
+    groupby=&#39;SubclassXCondition&#39;,
+    swap_axes=True,
+    cmap=piaso.pl.color.c_color4
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_32_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_32_0.png" style="width: 1401px; height: 330px;" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[111]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for key in EG_top_geneset_dict.keys():
+    tmp=adata.obs[key+&#39;_nlog10_mc_FDR&#39;].copy()
+    tmp[tmp&lt;= (-np.log10(0.05))]=0
+    # tmp[tmp&lt;= (-np.log10(0.1))]=0
+    adata.obs[key+&#39;_nlog10_mc_FDR_trim&#39;]=tmp
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.dotplot(
+    adata,
+    var_names=[key+&#39;_nlog10_mc_FDR_trim&#39; for key in EG_top_geneset_dict.keys()],
+    groupby=&#39;SubclassXCondition&#39;,
+    swap_axes=True,
+    cmap=piaso.pl.color.c_color4
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_34_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_34_0.png" style="width: 1435px; height: 330px;" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[113]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for key in EG_top_geneset_dict.keys():
+    tmp=adata.obs[key+&#39;_nlog10_FDR&#39;].copy()
+    # tmp[tmp&lt;= (-np.log10(0.05))]=0
+    tmp[tmp&lt;= (-np.log10(0.1))]=0
+    adata.obs[key+&#39;_nlog10_FDR_trim&#39;]=tmp
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[114]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.dotplot(
+    adata,
+    var_names=[key+&#39;_nlog10_FDR_trim&#39; for key in EG_top_geneset_dict.keys()],
+    groupby=&#39;SubclassXCondition&#39;,
+    swap_axes=True,
+    cmap=piaso.pl.color.c_color4
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/home/mid166/.conda/envs/scda4/lib/python3.9/site-packages/scanpy/plotting/_dotplot.py:697: RuntimeWarning: invalid value encountered in true_divide
+  frac = (frac - dot_min) / old_range
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_36_1.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_36_1.png" style="width: 1416px; height: 330px;" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[61]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>EG_top_geneset_df=emergene.convertTopGeneDictToDF(
+    EG_top_geneset_dict,
+    gene_list_as_string=True,
+                      )
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>EG_top_geneset_df.head(10)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[62]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>EG_Control_Gene</th>
+      <th>EG_Control_EG_score</th>
+      <th>EG_Disease_Gene</th>
+      <th>EG_Disease_EG_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AC096637.1</td>
+      <td>0.467176</td>
+      <td>CD3E</td>
+      <td>0.673279</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>HSPA6</td>
+      <td>0.430486</td>
+      <td>CD8B</td>
+      <td>0.623488</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>MTRNR2L1</td>
+      <td>0.369348</td>
+      <td>CD3G</td>
+      <td>0.585773</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>SFN</td>
+      <td>0.349734</td>
+      <td>STC1</td>
+      <td>0.494837</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>AC021678.2</td>
+      <td>0.327302</td>
+      <td>NAGS</td>
+      <td>0.437685</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>NPAS4</td>
+      <td>0.312137</td>
+      <td>IL32</td>
+      <td>0.430496</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>AC115485.1</td>
+      <td>0.305229</td>
+      <td>CCL2</td>
+      <td>0.351259</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>LINC01850</td>
+      <td>0.289507</td>
+      <td>AC245014.3</td>
+      <td>0.333177</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>AC068205.1</td>
+      <td>0.286869</td>
+      <td>FMOD</td>
+      <td>0.327457</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>AL009177.1</td>
+      <td>0.279813</td>
+      <td>AC110992.1</td>
+      <td>0.326526</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>piaso.pl.plot_embeddings_split(
+    adata,
+    color=&#39;SERPINE1&#39;,
+    layer=&#39;log1p&#39;,
+    splitby=&#39;Condition&#39;,
+    color_map=piaso.pl.color.c_color1,
+    size=30,
+    frameon=False,
+    # vcenter=-np.log10(0.05),
+
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_39_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_39_0.png" style="width: 669px; height: 309px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>piaso.pl.plot_embeddings_split(
+    adata,
+    color=&#39;SERPINE1&#39;,
+    layer=&#39;localFC&#39;,
+    splitby=&#39;Condition&#39;,
+    color_map=piaso.pl.color.c_color1,
+    size=30,
+    frameon=False,
+    # vcenter=-np.log10(0.05),
+
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_40_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_40_0.png" style="width: 665px; height: 309px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>piaso.pl.plot_embeddings_split(
+    adata,
+    color=&#39;NPAS4&#39;,
+    layer=&#39;log1p&#39;,
+    splitby=&#39;Condition&#39;,
+    color_map=piaso.pl.color.c_color1,
+    size=30,
+    frameon=False,
+    # vcenter=-np.log10(0.05),
+
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_41_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_41_0.png" style="width: 669px; height: 309px;" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[52]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>sc.pl.umap(
+    adata,
+    color=EG_top_geneset_df[&#39;EG_Disease_Gene&#39;][20:26],
+    color_map=piaso.pl.color.c_color1,
+    # vmin=-5,
+    # vmax=6,
+    s=20,
+    ncols=6,
+    frameon=False,
+)
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_42_0.png" class="no-scaled-link" src="../_images/notebooks_22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring_42_0.png" style="width: 1870px; height: 289px;" />
+</div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../tutorials.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tutorials</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../modules.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Load-the-data">Load the data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Check-the-cell-type-composition">Check the cell type composition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Run-Emergene">Run Emergene</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Calculate-enrichment-score-and-p-values-for-each-individual-cell">Calculate enrichment score and p-values for each individual cell</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Min Dai.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
