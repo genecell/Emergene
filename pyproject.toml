@@ -1,0 +1,63 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = [ "hatchling"]
+
+[project]
+name = "emergene"
+version = "1.0.0"
+description = "EMERGENE for individual cell-based differential transcriptomic analysis across conditions."
+requires-python = ">=3.9"
+license = "BSD-3-clause"
+authors = [
+    { name = "Min Dai", email = "dai@broadinstitute.org" }
+]
+maintainers = [
+    { name = "Min Dai", email = "dai@broadinstitute.org" },
+    { name = "Vallari Shende", email = "vshende@broadinstitute.org" }
+]
+readme = "README.md"
+classifiers = [
+    "License :: OSI Approved :: BSD License",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+    "numpy>=1.21.6",
+    "scipy>=1.7.3",
+    "pandas>=1.4.4",
+    "scikit-learn>=1.1",
+    "scanpy>=1.9.1",
+    "anndata>=0.8.0",
+    "bbknn>=1.5.0",
+    "scdrs>=1.0.0",
+    "statsmodels>=0.13.2",
+
+]
+
+# https://docs.pypi.org/project_metadata/#project-urls
+[project.urls]
+Documentation = "https://genecell.github.io/Emergene/"
+Source = "https://github.com/genecell/Emergene/"
+Homepage = "https://genecell.github.io/Emergene/"
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit", # static checking
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [ "emergene" ]
