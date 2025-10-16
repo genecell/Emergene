@@ -1,8 +1,10 @@
-## EMERGENE
+# Emergene
 
-[![Python Version](https://img.shields.io/pypi/pyversions/emergene.svg)](https://pypi.org/project/emergene/)
+[![Stars](https://img.shields.io/github/stars/genecell/Emergene?logo=GitHub&color=yellow)](https://github.com/genecell/Emergene/stargazers)
+[![PyPI](https://img.shields.io/pypi/v/emergene?logo=PyPI)](https://pypi.org/project/emergene)
+[![Total downloads](https://static.pepy.tech/personalized-badge/emergene?period=total&units=international_system&left_color=black&right_color=orange&left_text=downloads)](https://pepy.tech/project/emergene)
+[![Monthly downloads](https://static.pepy.tech/personalized-badge/emergene?period=month&units=international_system&left_color=black&right_color=orange&left_text=downloads/month)](https://pepy.tech/project/emergene)
 [![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://genecell.github.io/Emergene/)
-
 
 ### Individual cell-based differential transcriptomic analysis across conditions
 
@@ -10,12 +12,12 @@ If your scRNA-seq data have two conditions, e.g., disease and control, and you'd
 
 ### 📖 Documentation
 
-[EMERGENE Documentation](https://genecell.github.io/Emergene/) 
+[Emergene Documentation](https://genecell.github.io/Emergene/) 
 
 
 ### 📦 Installation
 
-You could simply install EMERGENE via `pip` in your conda environment:
+You could simply install Emergene via `pip` in your conda environment:
 ```bash
 pip install emergene
 ```
@@ -35,7 +37,7 @@ pip install git+https://github.com/genecell/Emergene.git
 - **Statistical rigor**: Built-in significance testing and background correction for each individual cell
 
 
-## 💡 When to Use EMERGENE
+### 💡 When to Use Emergene
 
 #### Perfect for:
 - 🔬 **Disease vs. Control**: Identify cells and genes most affected by disease
@@ -52,7 +54,7 @@ pip install git+https://github.com/genecell/Emergene.git
 
 
 ### Citation
-If EMERGENE is useful for your research,  please consider citing [Wu et al., Pyramidal neurons proportionately alter the identity and survival of specific cortical interneuron subtypes, bioRxiv (2024)](https://www.biorxiv.org/content/10.1101/2024.07.20.604399v1). 
+If Emergene is useful for your research,  please consider citing [Wu et al., Pyramidal neurons proportionately alter the identity and survival of specific cortical interneuron subtypes, bioRxiv (2024)](https://www.biorxiv.org/content/10.1101/2024.07.20.604399v1). 
 
 ### Contact
 Min Dai
