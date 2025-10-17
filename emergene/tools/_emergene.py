@@ -89,7 +89,7 @@ def runEMERGENE(
         Scaling parameter for the exponential kernel in adjacency matrix
         construction. Larger values result in slower decay of edge weights.
     n_cells_expressed_threshold : int, default=50
-        Minimum number of cells in which a gene must be expressed to be
+        Minimum number of cells (within the target condition) in which a gene must be expressed to be
         considered. Genes below this threshold receive minimum scores.
     n_top_EG_genes : int, default=500
         Number of top emergent genes to select for each condition based on
@@ -279,11 +279,7 @@ def runEMERGENE(
     if not inplace:
         emergene_scores = pd.DataFrame(index=adata.var_names)
     
-    # Calculate the number of expressed cells for each gene
-    if issparse(adata.X):
-        n_cells_expressed = adata.X.getnnz(axis=0)
-    else:
-        n_cells_expressed = np.sum(adata.X > 0, axis=0)
+    
     
     # Create lists to store fold change matrices and indices
     fold_change_list = []
@@ -320,8 +316,19 @@ def runEMERGENE(
             sigma=sigma,
         )
         
+        
+        
+        
         # Extract gene expression for target condition
         genexcell_target = genexcell[:, idx_cells]
+        
+        
+        # Calculate the number of expressed cells for each gene
+        ### Updated on Oct 17, 2025, Restrict this to each condition, this makes more sense
+        if issparse(genexcell_target.T):
+            n_cells_expressed = genexcell_target.T.getnnz(axis=0)
+        else:
+            n_cells_expressed = np.sum(genexcell_target.T > 0, axis=0)
         
         # Calculate random background specificity
         if verbose > 1:
