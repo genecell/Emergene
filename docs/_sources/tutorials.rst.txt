@@ -4,4 +4,4 @@ Tutorials
 .. toctree::
    :maxdepth: 1
 
-   notebooks/22_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring.ipynb
+   notebooks/26_Emergene_Tutorial_SEA-AD_CaseControl_subset_useEmergeneScoring-NewlyPackaged.ipynb

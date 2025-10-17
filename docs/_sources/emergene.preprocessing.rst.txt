@@ -1,0 +1,11 @@
+emergene.preprocessing package
+==============================
+
+.. automodule:: emergene.preprocessing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:
+
+.. autofunction:: convertTopGeneDictToDF
+.. autofunction:: infog

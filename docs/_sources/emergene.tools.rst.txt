@@ -1,0 +1,8 @@
+emergene.tools package
+======================
+
+.. automodule:: emergene.tools
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :private-members:

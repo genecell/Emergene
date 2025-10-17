@@ -1,15 +1,17 @@
 emergene package
-================
+=============
 
 .. automodule:: emergene
    :members:
    :undoc-members:
    :show-inheritance:
    :private-members:
-.. autofunction:: EmerGene
-.. autofunction:: computeScore
-.. autofunction:: convertTopGeneDictToDF
-.. autofunction:: runMarkG
-.. autofunction:: score
-.. autofunction:: identifyGeneModule
-.. autofunction:: infog
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   emergene.preprocessing
+   emergene.tools
