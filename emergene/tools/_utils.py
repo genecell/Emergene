@@ -209,45 +209,117 @@ def _generate_random_background(
     return(random_gsp_list)
 
 
+
 def _build_adjacency_matrix_acrossDataset(
     adata: AnnData,
-    use_rep:str='X_pca',
-    condition_key:str='Sample',
-    n_nearest_neighbors:int=10,
-            ):
+    use_rep: str = 'X_pca',
+    condition_key: str = 'Sample',
+    n_nearest_neighbors: int = 10,
+    verbosity: int = 0
+) -> sp.csr_matrix:
     """
     Build an adjacency (connectivity) matrix across datasets using the bbknn algorithm.
+
+    This function includes robust pre-flight checks to prevent common C++ Segmentation Faults
+    associated with BBKNN and Annoy, including version incompatibility and data corruption checks.
 
     Parameters
     ----------
     adata : AnnData
-        AnnData object for preprocessed data.
+        AnnData object containing the preprocessed data.
     use_rep : str, optional (default: 'X_pca')
         Key in `adata.obsm` that holds the low-dimensional representation to be used.
     condition_key : str, optional (default: 'Sample')
         Key in `adata.obs` that indicates the batch or condition label for each cell.
     n_nearest_neighbors : int, optional (default: 10)
         Number of nearest neighbors to consider within each batch when running bbknn.
+    verbosity : int, optional (default: 0)
+        Controls the level of logging. 0 = silent, 1 = info.
 
     Returns
     -------
     csr_matrix
         Sparse cell-to-cell connectivity (adjacency) matrix computed across datasets.
+
+    Raises
+    ------
+    ImportError
+        If the installed 'annoy' version is >= 1.17.0 (known to crash BBKNN).
+    ValueError
+        If the input representation contains NaNs or Infinite values.
+    KeyError
+        If `use_rep` is not found in `adata.obsm`.
     """
+
+    # 1. PRE-FLIGHT CHECK: Data Integrity
+    if use_rep not in adata.obsm:
+        raise KeyError(f"Representation '{use_rep}' not found in `adata.obsm`.")
     
-    # X_rep=adata.obsm[use_rep].copy()
-    
-    adata_copy=sc.external.pp.bbknn(
+    X_emb = adata.obsm[use_rep]
+
+    # Check for NaNs/Infs (These cause silent Core Dumps in Annoy)
+    if np.issubdtype(X_emb.dtype, np.number):
+        if np.isnan(X_emb).any():
+            raise ValueError(f"Input representation '{use_rep}' contains NaN values. "
+                             "This will cause BBKNN to crash (Segmentation Fault).")
+        if np.isinf(X_emb).any():
+            raise ValueError(f"Input representation '{use_rep}' contains Infinite values. "
+                             "Please clean your data before running BBKNN.")
+
+    # Check Sparse Format (C++ libraries often fail on CSC/COO, forcing CSR is safer)
+    if sp.issparse(X_emb) and X_emb.format != 'csr':
+        if verbosity > 0: 
+            print(f"Note: Converting '{use_rep}' to CSR format for stability...")
+        # We modify the object in-place to prevent future crashes in this session
+        adata.obsm[use_rep] = X_emb.tocsr()
+
+
+    # 2. PRE-FLIGHT CHECK: Version Compatibility
+    try:
+        # BBKNN uses 'annoy' by default. 
+        # Annoy versions >= 1.17.0 introduced a C++ memory change incompatible with BBKNN.
+        annoy_dist = pkg_resources.get_distribution("annoy")
+        annoy_version = annoy_dist.version
+        
+        if pkg_resources.parse_version(annoy_version) >= pkg_resources.parse_version('1.17.0'):
+            error_msg = (
+                f"\n\nCRITICAL ERROR: Incompatible Annoy version detected ({annoy_version}).\n"
+                "BBKNN requires annoy < 1.17.0 to avoid Segmentation Faults (Core Dumps).\n"
+                "--------------------------------------------------------\n"
+                "PLEASE RUN THE FOLLOWING COMMAND TO FIX THIS:\n"
+                "pip install annoy==1.16.3\n"
+                "--------------------------------------------------------\n"
+                "(Remember to restart your kernel after installing!)\n"
+            )
+            raise ImportError(error_msg)
+            
+    except pkg_resources.DistributionNotFound:
+        # If annoy isn't installed, BBKNN will raise its own standard error, so we pass.
+        pass
+
+
+    # 3. EXECUTION: Run BBKNN
+    if verbosity > 0:
+        print(f"Running BBKNN on '{use_rep}' with batch key '{condition_key}'...")
+
+    # Note: Using copy=True creates a full deep copy of the AnnData object.
+    # This is memory intensive. We use it here to extract the graph without 
+    # modifying the original 'adata' object's neighbors/connectivities.
+    adata_copy = sc.external.pp.bbknn(
         adata,
         batch_key=condition_key,
         use_rep=use_rep,
         copy=True,
         neighbors_within_batch=n_nearest_neighbors
     )
-    cellxcell_acrossDataset=adata_copy.obsp['connectivities']
-    
-    return cellxcell_acrossDataset
 
+    # Extract the connectivity matrix
+    cellxcell_acrossDataset = adata_copy.obsp['connectivities']
+
+    # 4. CLEANUP
+    del adata_copy
+
+    return cellxcell_acrossDataset
 
 
 ### Refer to Scanpy for _select_top_n function
