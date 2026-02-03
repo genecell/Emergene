@@ -275,14 +275,14 @@ def _build_adjacency_matrix_acrossDataset(
         adata.obsm[use_rep] = X_emb.tocsr()
 
 
+    from importlib.metadata import version, PackageNotFoundError
+    from packaging.version import parse as parse_version
+
     # 2. PRE-FLIGHT CHECK: Version Compatibility
     try:
-        # BBKNN uses 'annoy' by default. 
-        # Annoy versions >= 1.17.0 introduced a C++ memory change incompatible with BBKNN.
-        annoy_dist = pkg_resources.get_distribution("annoy")
-        annoy_version = annoy_dist.version
+        annoy_version = version("annoy")
         
-        if pkg_resources.parse_version(annoy_version) >= pkg_resources.parse_version('1.17.0'):
+        if parse_version(annoy_version) >= parse_version('1.17.0'):
             error_msg = (
                 f"\n\nCRITICAL ERROR: Incompatible Annoy version detected ({annoy_version}).\n"
                 "BBKNN requires annoy < 1.17.0 to avoid Segmentation Faults (Core Dumps).\n"
@@ -294,7 +294,7 @@ def _build_adjacency_matrix_acrossDataset(
             )
             raise ImportError(error_msg)
             
-    except pkg_resources.DistributionNotFound:
+    except PackageNotFoundError:
         # If annoy isn't installed, BBKNN will raise its own standard error, so we pass.
         pass
 
