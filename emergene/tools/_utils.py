@@ -1,4 +1,5 @@
 from scipy.sparse import csr_matrix, issparse
+import scipy.sparse as sp
 import numpy as np
 from sklearn.neighbors import kneighbors_graph
 from sklearn.preprocessing import normalize
